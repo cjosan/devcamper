@@ -61,4 +61,9 @@ public class BootcampController {
 			ResponseEntity.ok();
 		}
 	}
+
+	@GetMapping("/radius/{zipcode}/{radius}")
+	public ResponseEntity<List<Bootcamp>> getBootcampsInRadius(@PathVariable String zipcode, @PathVariable Double radius) {
+		return new ResponseEntity<>(bootcampService.getBootcampsInRadius(zipcode, radius), HttpStatus.OK);
+	}
 }

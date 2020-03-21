@@ -5,17 +5,32 @@ import com.cjson.devcamper.model.QBootcamp;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.SingleValueBinding;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 public interface BootcampRepository extends PagingAndSortingRepository<Bootcamp, Long>, QuerydslPredicateExecutor<Bootcamp>, QuerydslBinderCustomizer<QBootcamp> {
+
+	//	SELECT *
+//	FROM location
+//	WHERE ST_DistanceSphere(point, ST_MakePoint(-71.103257,52.350615)) <= 900 * 1609.34
+//
+//	SELECT *
+//	FROM location
+//	WHERE ST_DistanceSphere(point, ST_MakePoint(-71.103257,52.350615)) <= 1112 * 1000
+	@Query(value = "SELECT * FROM bootcamp " +
+			"WHERE ST_DistanceSphere(location_point, ST_MakePoint(:longitude, :latitude)) <= :radius * 1609.34",
+			nativeQuery = true)
+	List<Bootcamp> getBootcampsInRadius(@Param("latitude") Double latitude, @Param("longitude") Double longitude, @Param("radius") Double radius);
 
 	@Override
 	default void customize(QuerydslBindings bindings, QBootcamp bootcamp) {

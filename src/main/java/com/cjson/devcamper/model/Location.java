@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,13 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Embeddable
 public class Location {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	Long id;
+	private Point locationPoint;
 
 	@Convert(converter = ListToStringConverter.class)
 	private List<Double> coordinates;

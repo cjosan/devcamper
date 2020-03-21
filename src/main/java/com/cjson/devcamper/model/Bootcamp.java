@@ -50,7 +50,7 @@ public class Bootcamp {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String address;
 
-	@OneToOne(cascade = {CascadeType.ALL})
+	@Embedded
 	private Location location;
 
 	@NotEmpty(message = "Please add some tags")

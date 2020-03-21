@@ -14,5 +14,6 @@ public interface BootcampService {
 	Bootcamp createBootcamp(Bootcamp bootcamp);
 	Optional<Bootcamp> updateBootcamp(Long id, Bootcamp bootcamp) throws IllegalStateException;
 	Boolean deleteBootcamp(Long id);
+	List<Bootcamp> getBootcampsInRadius(String zipcode, Double radius);
 
 }

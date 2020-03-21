@@ -6,6 +6,9 @@ import com.cjson.devcamper.model.Location;
 import com.cjson.devcamper.repository.BootcampRepository;
 import com.cjson.devcamper.utils.GeocoderUtils;
 import com.querydsl.core.types.Predicate;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +70,13 @@ public class BootcampServiceImpl implements BootcampService {
 		return true;
 	}
 
+	@Override
+	public List<Bootcamp> getBootcampsInRadius(String zipcode, Double radius) {
+		Location location = getLocationInfo(zipcode);
+
+		return bootcampRepo.getBootcampsInRadius(location.getCoordinates().get(0), location.getCoordinates().get(1), radius);
+	}
+
 	private Location getLocationInfo(String location) {
 		GeocodeResponse geocodeResponse = geocoderUtils.getAddress(location);
 		com.cjson.devcamper.dto.geocode.Location responseLocation = geocodeResponse.getResults().get(0).getLocations().get(0);
@@ -76,9 +86,12 @@ public class BootcampServiceImpl implements BootcampService {
 				responseLocation.getAdminArea3() + " " + responseLocation.getPostalCode(),
 				responseLocation.getAdminArea1());
 
+		GeometryFactory geometryFactory = new GeometryFactory();
+		Point point = geometryFactory.createPoint(new Coordinate(responseLocation.getLatLng().getLng(), responseLocation.getLatLng().getLat()));
+
 		return Location.builder()
-				.id(null)
-				.coordinates(Arrays.asList(responseLocation.getLatLng().getLng(), responseLocation.getLatLng().getLat()))
+				.locationPoint(point)
+				.coordinates(Arrays.asList(responseLocation.getLatLng().getLat(), responseLocation.getLatLng().getLng()))
 				.formattedAddress(formattedAddress)
 				.street(responseLocation.getStreet())
 				.city(responseLocation.getAdminArea5())
