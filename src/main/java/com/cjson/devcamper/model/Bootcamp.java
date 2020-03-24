@@ -1,5 +1,6 @@
 package com.cjson.devcamper.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.slugify.Slugify;
 import lombok.Data;
@@ -13,10 +14,12 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
+//@JsonFilter("BootcampFilter")
 public class Bootcamp {
 
 	@Id
@@ -55,7 +58,7 @@ public class Bootcamp {
 
 	@NotEmpty(message = "Please add some tags")
 	@ElementCollection
-	private List<String> tags;
+	private Set<String> tags;
 
 	private Boolean housing = false;
 

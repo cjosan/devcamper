@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
+
 public class DevcamperApplication {
 
 	public static void main(String[] args) {
@@ -16,4 +17,5 @@ public class DevcamperApplication {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+
 }

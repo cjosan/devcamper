@@ -30,7 +30,7 @@ public class BootcampServiceImpl implements BootcampService {
 	}
 
 	@Override
-	public List<Bootcamp> getAllBootcamps(Predicate predicate, Pageable pageable) {
+	public List<Bootcamp> getAllBootcamps(Predicate predicate, Pageable pageable, String select) {
 		return StreamSupport.stream(bootcampRepo.findAll(predicate, pageable).spliterator(), false).collect(Collectors.toList());
 	}
 
@@ -71,10 +71,15 @@ public class BootcampServiceImpl implements BootcampService {
 	}
 
 	@Override
-	public List<Bootcamp> getBootcampsInRadius(String zipcode, Double radius) {
+	public List<Bootcamp> getBootcampsInRadius(String zipcode, Double radius, String units) {
 		Location location = getLocationInfo(zipcode);
 
-		return bootcampRepo.getBootcampsInRadius(location.getCoordinates().get(0), location.getCoordinates().get(1), radius);
+		double meters = 1609.34;
+		if (units != null) {
+			meters = units.equals("km") ? 1000 : 1609.34;
+		}
+
+		return bootcampRepo.getBootcampsInRadius(location.getCoordinates().get(1), location.getCoordinates().get(0), radius, meters);
 	}
 
 	private Location getLocationInfo(String location) {

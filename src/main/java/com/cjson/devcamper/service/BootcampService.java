@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface BootcampService {
 
-	List<Bootcamp> getAllBootcamps(Predicate predicate, Pageable pageable);
+	List<Bootcamp> getAllBootcamps(Predicate predicate, Pageable pageable, String select);
 	Optional<Bootcamp> getSingleBootcampById(Long id) throws IllegalStateException;
 	Bootcamp createBootcamp(Bootcamp bootcamp);
 	Optional<Bootcamp> updateBootcamp(Long id, Bootcamp bootcamp) throws IllegalStateException;
 	Boolean deleteBootcamp(Long id);
-	List<Bootcamp> getBootcampsInRadius(String zipcode, Double radius);
+	List<Bootcamp> getBootcampsInRadius(String zipcode, Double radius, String units);
 
 }

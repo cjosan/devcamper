@@ -28,9 +28,9 @@ public interface BootcampRepository extends PagingAndSortingRepository<Bootcamp,
 //	FROM location
 //	WHERE ST_DistanceSphere(point, ST_MakePoint(-71.103257,52.350615)) <= 1112 * 1000
 	@Query(value = "SELECT * FROM bootcamp " +
-			"WHERE ST_DistanceSphere(location_point, ST_MakePoint(:longitude, :latitude)) <= :radius * 1609.34",
+			"WHERE ST_DistanceSphere(location_point, ST_MakePoint(:longitude, :latitude)) <= :radius * :meters",
 			nativeQuery = true)
-	List<Bootcamp> getBootcampsInRadius(@Param("latitude") Double latitude, @Param("longitude") Double longitude, @Param("radius") Double radius);
+	List<Bootcamp> getBootcampsInRadius(@Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("radius") Double radius, @Param("meters") Double meters);
 
 	@Override
 	default void customize(QuerydslBindings bindings, QBootcamp bootcamp) {
